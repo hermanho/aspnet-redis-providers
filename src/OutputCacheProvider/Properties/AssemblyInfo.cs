@@ -29,23 +29,3 @@ using System.Runtime.InteropServices;
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
-
-namespace System.Reflection
-{
-    /// <summary>
-    /// Provided as a down-level stub for the 4.5 AssemblyMetaDataAttribute class.
-    /// All released assemblies should define [AssemblyMetadata("Serviceable", "True")].
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true, Inherited = false)]
-    internal sealed class AssemblyMetadataAttribute : Attribute
-    {
-        public AssemblyMetadataAttribute(string key, string value)
-        {
-            Key = key;
-            Value = value;
-        }
-
-        public string Key { get; set; }
-        public string Value { get; set; }
-    }
-}
