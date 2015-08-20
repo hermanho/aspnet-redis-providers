@@ -58,14 +58,9 @@ namespace Microsoft.Web.Redis
             {
                 data = new RedisNull();
             }
-
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                binaryFormatter.Serialize(memoryStream, data);
-                byte[] objectDataAsStream = memoryStream.ToArray();
-                return objectDataAsStream;
-            }
+            string s = Newtonsoft.Json.JsonConvert.SerializeObject(data);
+            byte[] objectDataAsStream = System.Text.Encoding.Unicode.GetBytes(s);
+            return objectDataAsStream;
         }
 
         internal static object GetObjectFromBytes(byte[] dataAsBytes)
@@ -74,19 +69,9 @@ namespace Microsoft.Web.Redis
             {
                 return null;
             }
-
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
-            using (MemoryStream memoryStream = new MemoryStream(dataAsBytes, 0, dataAsBytes.Length))
-            {
-                memoryStream.Seek(0, System.IO.SeekOrigin.Begin);
-                object retObject = (object)binaryFormatter.Deserialize(memoryStream);
-
-                if (retObject.GetType() == typeof(RedisNull))
-                {
-                    return null;
-                }
-                return retObject;
-            }
+            string s = System.Text.Encoding.Unicode.GetString(dataAsBytes);
+            object retObject = Newtonsoft.Json.JsonConvert.DeserializeObject(s);
+            return retObject;
         }
     }
 }
