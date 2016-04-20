@@ -272,6 +272,7 @@ namespace Microsoft.Web.Redis
                 {
                     throw;
                 }
+                RemoveItem(context, id, lockId, null);
                 return null;
             }
         }
