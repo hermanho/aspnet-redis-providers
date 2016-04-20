@@ -192,6 +192,7 @@ namespace Microsoft.Web.Redis
 
         private SessionStateStoreData GetItemFromSessionStore(bool isWriteLockRequired, HttpContext context, string id, out bool locked, out TimeSpan lockAge, out object lockId, out SessionStateActions actions)
         {
+            Type t = null;
             try
             {
                 SessionStateStoreData sessionStateStoreData = null;
@@ -249,6 +250,7 @@ namespace Microsoft.Web.Redis
                 // Restore action flag from session data
                 if (sessionData["SessionStateActions"] != null) 
                 {
+                    t = sessionData["SessionStateActions"].GetType();
                     actions = (SessionStateActions)sessionData["SessionStateActions"];
                 }
 
@@ -260,6 +262,7 @@ namespace Microsoft.Web.Redis
             catch (Exception e)
             {
                 LogUtility.LogError("GetItemFromSessionStore => {0}", e.ToString());
+                LogUtility.LogError(t.ToString());
                 locked = false;
                 lockId = null;
                 lockAge = TimeSpan.Zero;
