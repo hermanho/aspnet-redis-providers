@@ -262,7 +262,9 @@ namespace Microsoft.Web.Redis
             catch (Exception e)
             {
                 LogUtility.LogError("GetItemFromSessionStore => {0}", e.ToString());
+                if (t != null){
                 LogUtility.LogError(t.ToString());
+                }
                 locked = false;
                 lockId = null;
                 lockAge = TimeSpan.Zero;
