@@ -251,7 +251,7 @@ namespace Microsoft.Web.Redis
                 if (sessionData["SessionStateActions"] != null) 
                 {
                     t = sessionData["SessionStateActions"].GetType();
-                    actions = (SessionStateActions)sessionData["SessionStateActions"];
+                    Enum.TryParse(sessionData["SessionStateActions"].ToString(), out actions);
                 }
 
                 //Get data related to this session from sessionDataDictionary and populate session items
