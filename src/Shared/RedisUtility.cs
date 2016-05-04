@@ -12,6 +12,12 @@ namespace Microsoft.Web.Redis
 {
     internal static class RedisUtility
     {
+        private static Newtonsoft.Json.JsonSerializerSettings _jsonsetting = new Newtonsoft.Json.JsonSerializerSettings
+        {
+            TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All,
+            TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+        };
+
         public static int AppendRemoveItemsInList(ChangeTrackingSessionStateItemCollection sessionItems, List<object> list)
         {
             int noOfItemsRemoved = 0;
@@ -51,14 +57,14 @@ namespace Microsoft.Web.Redis
             }
             return list;
         }
-
+        
         internal static byte[] GetBytesFromObject(object data)
         {
             if (data == null)
             {
                 data = new RedisNull();
             }
-            string s = Newtonsoft.Json.JsonConvert.SerializeObject(data);
+            string s = Newtonsoft.Json.JsonConvert.SerializeObject(data, _jsonsetting);
             byte[] objectDataAsStream = System.Text.Encoding.Unicode.GetBytes(s);
             return objectDataAsStream;
         }
@@ -70,7 +76,7 @@ namespace Microsoft.Web.Redis
                 return null;
             }
             string s = System.Text.Encoding.Unicode.GetString(dataAsBytes);
-            object retObject = Newtonsoft.Json.JsonConvert.DeserializeObject(s);
+            object retObject = Newtonsoft.Json.JsonConvert.DeserializeObject(s, _jsonsetting);
             return retObject;
         }
     }
