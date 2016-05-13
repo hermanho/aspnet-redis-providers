@@ -15,7 +15,8 @@ namespace Microsoft.Web.Redis
         private static Newtonsoft.Json.JsonSerializerSettings _jsonsetting = new Newtonsoft.Json.JsonSerializerSettings
         {
             TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All,
-            TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+            TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
+            ConstructorHandling = Newtonsoft.Json.ConstructorHandling.AllowNonPublicDefaultConstructor
         };
 
         public static int AppendRemoveItemsInList(ChangeTrackingSessionStateItemCollection sessionItems, List<object> list)
