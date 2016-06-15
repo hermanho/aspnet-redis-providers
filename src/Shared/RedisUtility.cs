@@ -58,7 +58,7 @@ namespace Microsoft.Web.Redis
             }
             return list;
         }
-        
+
         internal static byte[] GetBytesFromObject(object data)
         {
             if (data == null)
@@ -77,8 +77,16 @@ namespace Microsoft.Web.Redis
                 return null;
             }
             string s = System.Text.Encoding.Unicode.GetString(dataAsBytes);
-            object retObject = Newtonsoft.Json.JsonConvert.DeserializeObject(s, _jsonsetting);
-            return retObject;
+            try
+            {
+                object retObject = Newtonsoft.Json.JsonConvert.DeserializeObject(s, _jsonsetting);
+                return retObject;
+            }
+            catch (Newtonsoft.Json.JsonSerializationException jsonEx)
+            {
+                LogUtility.LogError("GetObjectFromBytes => {0} ", jsonEx.Message);
+                return null;
+            }
         }
     }
 }

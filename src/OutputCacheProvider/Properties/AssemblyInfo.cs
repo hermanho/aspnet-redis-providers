@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.1.0.0")]
 #endif
 [assembly: AssemblyTitle("Cache Providers")]
-
+#if NETFX_40
 namespace System.Reflection
 {
     /// <summary>
@@ -54,3 +54,4 @@ namespace System.Reflection
         public string Value { get; set; }
     }
 }
+#endif
