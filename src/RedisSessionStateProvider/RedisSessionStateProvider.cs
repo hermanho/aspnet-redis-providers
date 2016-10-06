@@ -200,6 +200,10 @@ namespace Microsoft.Web.Redis
                 lockAge = TimeSpan.Zero;
                 lockId = 0;
                 actions = SessionStateActions.None;
+                if (id == null)
+                {
+                    return null;
+                }
                 GetAccessToStore(id);
                 ISessionStateItemCollection sessionData = null;
             
@@ -250,7 +254,6 @@ namespace Microsoft.Web.Redis
                 // Restore action flag from session data
                 if (sessionData["SessionStateActions"] != null) 
                 {
-                    t = sessionData["SessionStateActions"].GetType();
                     Enum.TryParse(sessionData["SessionStateActions"].ToString(), out actions);
                 }
 

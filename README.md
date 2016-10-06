@@ -1,3 +1,5 @@
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
 ASP.NET Redis Providers
 =======================
 This repository contains code for Session State and Output Cache providers for Redis.
@@ -6,7 +8,7 @@ This repository contains code for Session State and Output Cache providers for R
 
 ## Documentation
 
-See [Azure Redis Session State Provider Documentation](https://msdn.microsoft.com/en-us/library/azure/dn690522.aspx) and [Azure Redis Output Cache Provider Documentation](https://msdn.microsoft.com/en-us/library/azure/dn798898.aspx)
+See [Azure Redis Session State Provider Documentation](https://azure.microsoft.com/documentation/articles/cache-aspnet-session-state-provider/) and [Azure Redis Output Cache Provider Documentation](https://azure.microsoft.com/documentation/articles/cache-aspnet-output-cache-provider/)
 
 ## License
 

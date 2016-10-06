@@ -63,6 +63,9 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="..\Shared\TestSerializer.cs">
+      <Link>TestSerializer.cs</Link>
+    </Compile>
     <Compile Include="ChangeTrackingSessionStateItemCollectionTests.cs" />
     <Compile Include="ProviderConfigurationTests.cs" />
     <Compile Include="RedisSharedConnectionTests.cs" />

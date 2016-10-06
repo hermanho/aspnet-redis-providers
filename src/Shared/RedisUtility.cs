@@ -5,21 +5,35 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Microsoft.Web.Redis
 {
-    internal static class RedisUtility
+    internal sealed class RedisUtility
     {
-        private static Newtonsoft.Json.JsonSerializerSettings _jsonsetting = new Newtonsoft.Json.JsonSerializerSettings
-        {
-            TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All,
-            TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
-            ConstructorHandling = Newtonsoft.Json.ConstructorHandling.AllowNonPublicDefaultConstructor
-        };
+        private readonly ProviderConfiguration _configuration;
+        internal readonly ISerializer _serializer;
 
-        public static int AppendRemoveItemsInList(ChangeTrackingSessionStateItemCollection sessionItems, List<object> list)
+        public RedisUtility(ProviderConfiguration configuration)
+        {
+            _configuration = configuration;
+            _serializer = GetSerializer();
+        }
+
+        private ISerializer GetSerializer()
+        {
+            string serializerTypeName = _configuration.RedisSerializerType;
+            if (!string.IsNullOrWhiteSpace(serializerTypeName))
+            {
+                var serializerType = Type.GetType(serializerTypeName, true);
+                if (serializerType != null)
+                {
+                    return (ISerializer)Activator.CreateInstance(serializerType);
+                }
+            }
+            return new BinarySerializer();
+        }
+
+        public int AppendRemoveItemsInList(ChangeTrackingSessionStateItemCollection sessionItems, List<object> list)
         {
             int noOfItemsRemoved = 0;
             if (sessionItems.GetDeletedKeys() != null && sessionItems.GetDeletedKeys().Count != 0)
@@ -33,7 +47,7 @@ namespace Microsoft.Web.Redis
             return noOfItemsRemoved;
         }
 
-        public static int AppendUpdatedOrNewItemsInList(ChangeTrackingSessionStateItemCollection sessionItems, List<object> list)
+        public int AppendUpdatedOrNewItemsInList(ChangeTrackingSessionStateItemCollection sessionItems, List<object> list)
         {
             int noOfItemsUpdated = 0;
             if (sessionItems.GetModifiedKeys() != null && sessionItems.GetModifiedKeys().Count != 0)
@@ -48,9 +62,9 @@ namespace Microsoft.Web.Redis
             return noOfItemsUpdated;
         }
 
-        public static List<object> GetNewItemsAsList(ChangeTrackingSessionStateItemCollection sessionItems)
+        public List<object> GetNewItemsAsList(ChangeTrackingSessionStateItemCollection sessionItems)
         {
-            List<object> list = new List<object>();
+            List<object> list = new List<object>(sessionItems.Keys.Count * 2);
             foreach (string key in sessionItems.Keys)
             {
                 list.Add(key);
@@ -59,34 +73,14 @@ namespace Microsoft.Web.Redis
             return list;
         }
 
-        internal static byte[] GetBytesFromObject(object data)
+        internal byte[] GetBytesFromObject(object data)
         {
-            if (data == null)
-            {
-                data = new RedisNull();
-            }
-            string s = Newtonsoft.Json.JsonConvert.SerializeObject(data, _jsonsetting);
-            byte[] objectDataAsStream = System.Text.Encoding.Unicode.GetBytes(s);
-            return objectDataAsStream;
+            return _serializer.Serialize(data);
         }
 
-        internal static object GetObjectFromBytes(byte[] dataAsBytes)
+        internal object GetObjectFromBytes(byte[] dataAsBytes)
         {
-            if (dataAsBytes == null)
-            {
-                return null;
-            }
-            string s = System.Text.Encoding.Unicode.GetString(dataAsBytes);
-            try
-            {
-                object retObject = Newtonsoft.Json.JsonConvert.DeserializeObject(s, _jsonsetting);
-                return retObject;
-            }
-            catch (Newtonsoft.Json.JsonSerializationException jsonEx)
-            {
-                LogUtility.LogError("GetObjectFromBytes => {0} ", jsonEx.Message);
-                return null;
-            }
+            return _serializer.Deserialize(dataAsBytes);
         }
     }
 }

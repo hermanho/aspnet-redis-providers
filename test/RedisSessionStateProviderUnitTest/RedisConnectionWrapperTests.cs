@@ -16,6 +16,8 @@ namespace Microsoft.Web.Redis.Tests
 {
     public class RedisConnectionWrapperTests
     {
+        private static RedisUtility RedisUtility = new RedisUtility(Utility.GetDefaultConfigUtility());
+
         [Fact]
         public void UpdateExpiryTime_Valid()
         {
@@ -69,6 +71,7 @@ namespace Microsoft.Web.Redis.Tests
         {
             string sessionId = "session_id";
             var mockRedisClient = A.Fake<IRedisClientConnection>();
+            RedisConnectionWrapper.redisUtility = new RedisUtility(Utility.GetDefaultConfigUtility()); 
             RedisConnectionWrapper.sharedConnection = new RedisSharedConnection(null, null);
             RedisConnectionWrapper.sharedConnection.connection = mockRedisClient;
             RedisConnectionWrapper redisConn = new RedisConnectionWrapper(Utility.GetDefaultConfigUtility(), sessionId);
@@ -264,6 +267,7 @@ namespace Microsoft.Web.Redis.Tests
             ChangeTrackingSessionStateItemCollection data = new ChangeTrackingSessionStateItemCollection();
             
             var mockRedisClient = A.Fake<IRedisClientConnection>();
+            RedisConnectionWrapper.redisUtility = new RedisUtility(Utility.GetDefaultConfigUtility());
             RedisConnectionWrapper.sharedConnection = new RedisSharedConnection(null, null);
             RedisConnectionWrapper.sharedConnection.connection = mockRedisClient;
             RedisConnectionWrapper redisConn = new RedisConnectionWrapper(Utility.GetDefaultConfigUtility(), id);
@@ -293,6 +297,7 @@ namespace Microsoft.Web.Redis.Tests
 
             
             var mockRedisClient = A.Fake<IRedisClientConnection>();
+            RedisConnectionWrapper.redisUtility = new RedisUtility(Utility.GetDefaultConfigUtility());
             RedisConnectionWrapper.sharedConnection = new RedisSharedConnection(null, null);
             RedisConnectionWrapper.sharedConnection.connection = mockRedisClient;
             RedisConnectionWrapper redisConn = new RedisConnectionWrapper(Utility.GetDefaultConfigUtility(), id);
