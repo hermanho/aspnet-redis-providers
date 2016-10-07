@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata minClientVersion="2.6">
+        <id>Microsoft.Web.RedisSessionStateProvider.NoSN</id>
+        <version>2.2.2</version>
+        <title>RedisSessionStateProvider</title>
+        <authors>Microsoft</authors>
+        <owners>Microsoft</owners>
+        <licenseUrl>http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_enu.htm</licenseUrl>
+        <projectUrl>https://github.com/Azure/aspnet-redis-providers/wiki</projectUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Custom session state provider for redis cache.</description>
+        <copyright>Microsoft © 2014</copyright>
+        <tags>session sessionstateprovider azure microsoft windowsazureofficial redis</tags>
+        <dependencies>
+          <dependency id="StackExchange.Redis" version="1.0.603" />
+        </dependencies>
+        <frameworkAssemblies>
+          <frameworkAssembly assemblyName="System" targetFramework="net45" />
+          <frameworkAssembly assemblyName="System.Configuration" targetFramework="net45" />
+          <frameworkAssembly assemblyName="System.Web" targetFramework="net45" />
+          <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework="net45" />
+        </frameworkAssemblies>
+    </metadata>
+  <files>
+    <file src="bin\Release\Microsoft.Web.RedisSessionStateProvider\v4.5.2\Microsoft.Web.RedisSessionStateProvider.dll" target="lib\net452\Microsoft.Web.RedisSessionStateProvider.dll" />
+    <file src="bin\Release\Microsoft.Web.RedisSessionStateProvider\v4.5.2\Microsoft.Web.RedisSessionStateProvider.pdb" target="lib\net452\Microsoft.Web.RedisSessionStateProvider.pdb" />
+  </files>
+</package>
